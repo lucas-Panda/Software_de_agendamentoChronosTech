@@ -10,4 +10,7 @@ public class HomeController {
     public String home() {
         return "home"; // Nome do arquivo HTML
     }
+
+    @GetMapping("/login")
+    public String login(){return "login"; }
 }
