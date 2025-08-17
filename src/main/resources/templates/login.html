@@ -1,13 +1,68 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
+
 <body>
-    <p>Lets Go</p>
+<header>
+    <div id="divHeader">
+        <div>
+            <a th:href="@{/}"><img id="logoAgenda" src="/img/logoAgenda.jpg" alt=""></a>
+        </div>
+
+        <!-- Botão hamburguer (mobile) -->
+        <div id="menuToggle" onclick="toggleMenu()">&#9776;</div>
+
+        <!-- Menu principal (desktop) -->
+        <div id="divHeaderOpcoes">
+            <div class="divHeaderOpcoesFormatacao"><a th:href="@{/}" class="divHeaderOpcoesFormatacaoLetra">Sobre</a></div>
+            <div class="divHeaderOpcoesFormatacao"><a href="" class="divHeaderOpcoesFormatacaoLetra">Horarios Agendamentos</a></div>
+            <div class="divHeaderOpcoesFormatacao"><a th:href="@{/login}" class="divHeaderOpcoesFormatacaoLetra">Login</a></div>
+            <div class="divHeaderOpcoesFormatacao"><a href="" class="divHeaderOpcoesFormatacaoLetra">Cadastro</a></div>
+        </div>
+    </div>
+
+    <!-- Menu lateral (mobile) -->
+    <div id="sideMenu">
+        <span id="closeMenu" onclick="toggleMenu()">&#10005;</span>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/}">Sobre</a>
+        <a href="#">Horários Agendamentos</a>
+        <a th:href="@{/login}">Login</a>
+        <a href="#">Cadastro</a>
+    </div>
+</header>
+
+<section id="sectionCard">
+    <div id="divCard">
+        <div class="divCardOpcoes">
+            <p id="divCardOpcoesLetraLogin">Login</p>
+        </div>
+        <div class="divCardOpcoesInputs">
+            <div id="divCardOpcoesInput">
+                <div class="divCardOpcoesInputLabel"><label>Nome</label></div>
+                <div><input type="text" class="estiloInput"></div>
+            </div>
+
+            <div id="divCardOpcoesInput">
+                <div class="divCardOpcoesInputLabel"><label>Senha</label></div>
+                <div><input type="text" class="estiloInput"></div>
+            </div>
+        </div>
+        <div class="divCardOpcoes">
+            <input id="divCardOpcoesBtn" type="button" value="Entrar">
+        </div>
+    </div>
+</section>
+
+
+
+    <script src="/script/login.js"></script>
 </body>
 </html>
+
+

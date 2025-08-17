@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "home"; // Nome do arquivo HTML
+        return "home";
     }
 
     @GetMapping("/login")
