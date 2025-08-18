@@ -1,17 +1,14 @@
 package com.chronosTech.appAgendamentos.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
-
+@Table
 @Entity
 public class UsuarioEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long Id;
 
     private String nome;
     private String email;
@@ -19,7 +16,7 @@ public class UsuarioEntity implements Serializable {
     private String cpf;
 
     public Long getId(){
-        return id;
+        return Id;
     }
     public String getEmail(){
         return email;
@@ -35,7 +32,7 @@ public class UsuarioEntity implements Serializable {
     }
 
     public void setId(Long id){
-        this.id = id;
+        this.Id = id;
     }
     public void setEmail(String email){
         this.email = email;
