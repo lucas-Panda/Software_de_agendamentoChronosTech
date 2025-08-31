@@ -2,6 +2,8 @@ package com.chronosTech.appAgendamentos.entitys;
 
 import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -12,20 +14,25 @@ import java.util.Objects;
 public class UsuarioEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long Id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
+    @NotBlank
     @Column(nullable = false , unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private long numeroTelefone;
+    @NotNull
+    @Column(nullable = false , unique = true , length = 15)
+    private Long numeroTelefone;
 
-    @Column(nullable = false , unique = true)
-    private long cpf;
+    @NotNull
+    @Column(nullable = false , unique = true ,length = 11)
+    private Long cpf;
 
+    @NotBlank
     @Column(nullable = false)
     private String senha;
 
@@ -36,12 +43,12 @@ public class UsuarioEntity implements Serializable {
         
     }
 
-    public long getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
-        Id = id;
+    public void setId(Long id) {
+        this.Id = id;
     }
 
     public String getNome() {
@@ -60,19 +67,19 @@ public class UsuarioEntity implements Serializable {
         this.email = email;
     }
 
-    public long getNumeroTelefone() {
+    public Long getNumeroTelefone() {
         return numeroTelefone;
     }
 
-    public void setNumeroTelefone(long numeroTelefone) {
+    public void setNumeroTelefone(Long numeroTelefone) {
         this.numeroTelefone = numeroTelefone;
     }
 
-    public long getCpf() {
+    public Long getCpf() {
         return cpf;
     }
 
-    public void setCpf(long cpf) {
+    public void setCpf(Long cpf) {
         this.cpf = cpf;
     }
 

@@ -1,18 +1,16 @@
 package com.chronosTech.appAgendamentos.dto;
 
 import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.springframework.beans.BeanUtils;
 
 public class UsuarioDTO {
-    private long Id;
+
+    private Long Id;
     private String nome;
     private String email;
     private String senha;
-    private long numeroTelefone;
-    private long cpf;
+    private Long numeroTelefone;
+    private Long cpf;
 
     public UsuarioDTO(UsuarioEntity usuario){
         BeanUtils.copyProperties(usuario , this);
@@ -22,11 +20,11 @@ public class UsuarioDTO {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
@@ -54,19 +52,32 @@ public class UsuarioDTO {
         this.senha = senha;
     }
 
-    public long getNumeroTelefone() {
+    public Long getNumeroTelefone() {
         return numeroTelefone;
     }
 
-    public void setNumeroTelefone(long numeroTelefone) {
+    public void setNumeroTelefone(Long numeroTelefone) {
         this.numeroTelefone = numeroTelefone;
     }
 
-    public long getCpf() {
+    public Long getCpf() {
         return cpf;
     }
 
-    public void setCpf(long cpf) {
+    public void setCpf(Long cpf) {
         this.cpf = cpf;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UsuarioDTO that = (UsuarioDTO) o;
+        return Id.equals(that.Id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Id.hashCode();
     }
 }
