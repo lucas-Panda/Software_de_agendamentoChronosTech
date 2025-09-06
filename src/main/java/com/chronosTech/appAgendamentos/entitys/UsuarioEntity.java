@@ -4,6 +4,8 @@ import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
@@ -24,13 +26,13 @@ public class UsuarioEntity implements Serializable {
     @Column(nullable = false , unique = true)
     private String email;
 
-    @NotNull
-    @Column(nullable = false , unique = true , length = 15)
-    private Long numeroTelefone;
+    @NotBlank
+    @Column(nullable = false , unique = true)
+    private String numeroTelefone;
 
-    @NotNull
-    @Column(nullable = false , unique = true ,length = 11)
-    private Long cpf;
+    @NotBlank
+    @Column(nullable = false , unique = true)
+    private String cpf;
 
     @NotBlank
     @Column(nullable = false)
@@ -51,44 +53,44 @@ public class UsuarioEntity implements Serializable {
         this.Id = id;
     }
 
-    public String getNome() {
+    public @NotBlank String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(@NotBlank String nome) {
         this.nome = nome;
     }
 
-    public String getEmail() {
+    public @NotBlank String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotBlank String email) {
         this.email = email;
     }
 
-    public Long getNumeroTelefone() {
-        return numeroTelefone;
-    }
-
-    public void setNumeroTelefone(Long numeroTelefone) {
-        this.numeroTelefone = numeroTelefone;
-    }
-
-    public Long getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(Long cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getSenha() {
+    public @NotBlank String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {
+    public void setSenha(@NotBlank String senha) {
         this.senha = senha;
+    }
+
+    public @NotBlank String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(@NotBlank String cpf) {
+        this.cpf = cpf;
+    }
+
+    public @NotBlank String getNumeroTelefone() {
+        return numeroTelefone;
+    }
+
+    public void setNumeroTelefone(@NotBlank String numeroTelefone) {
+        this.numeroTelefone = numeroTelefone;
     }
 
     @Override

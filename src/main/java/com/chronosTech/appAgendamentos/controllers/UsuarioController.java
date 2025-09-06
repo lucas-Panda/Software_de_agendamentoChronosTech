@@ -2,6 +2,7 @@ package com.chronosTech.appAgendamentos.controllers;
 
 import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
 import com.chronosTech.appAgendamentos.services.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public void inserir(@RequestBody UsuarioDTO usuario){
+    public void inserir(@RequestBody @Valid UsuarioDTO usuario){
         usuarioService.inserir(usuario);
     }
 
     @PutMapping
-    public UsuarioDTO alterar(@RequestBody UsuarioDTO usuario){
+    public UsuarioDTO alterar(@RequestBody @Valid UsuarioDTO usuario){
         return usuarioService.alterar(usuario);
     }
 

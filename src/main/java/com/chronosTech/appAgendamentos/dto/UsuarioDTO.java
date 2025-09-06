@@ -1,6 +1,8 @@
 package com.chronosTech.appAgendamentos.dto;
 
 import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
+import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
 
 public class UsuarioDTO {
@@ -9,8 +11,13 @@ public class UsuarioDTO {
     private String nome;
     private String email;
     private String senha;
-    private Long numeroTelefone;
-    private Long cpf;
+
+    @Pattern(regexp = "\\d{11}", message = "O telefone deve conter apenas números e ter 11 dígitos")
+    private String numeroTelefone;
+
+    @Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números e ter 11 dígitos")
+    @CPF(message = "CPF inválido")
+    private String cpf;
 
     public UsuarioDTO(UsuarioEntity usuario){
         BeanUtils.copyProperties(usuario , this);
@@ -52,19 +59,19 @@ public class UsuarioDTO {
         this.senha = senha;
     }
 
-    public Long getNumeroTelefone() {
+    public @Pattern(regexp = "\\d{11}", message = "O telefone deve conter apenas números e ter 11 dígitos") String getNumeroTelefone() {
         return numeroTelefone;
     }
 
-    public void setNumeroTelefone(Long numeroTelefone) {
+    public void setNumeroTelefone(@Pattern(regexp = "\\d{11}", message = "O telefone deve conter apenas números e ter 11 dígitos") String numeroTelefone) {
         this.numeroTelefone = numeroTelefone;
     }
 
-    public Long getCpf() {
+    public @Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números e ter 11 dígitos") @CPF(message = "CPF inválido") String getCpf() {
         return cpf;
     }
 
-    public void setCpf(Long cpf) {
+    public void setCpf(@Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números e ter 11 dígitos") @CPF(message = "CPF inválido") String cpf) {
         this.cpf = cpf;
     }
 
