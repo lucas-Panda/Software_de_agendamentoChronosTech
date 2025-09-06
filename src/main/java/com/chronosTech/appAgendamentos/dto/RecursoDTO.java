@@ -48,11 +48,11 @@ public class RecursoDTO {
         if (o == null || getClass() != o.getClass()) return false;
 
         RecursoDTO that = (RecursoDTO) o;
-        return Id.equals(that.Id);
+        return Objects.equals(Id, that.Id);
     }
 
     @Override
     public int hashCode() {
-        return Id.hashCode();
+        return Objects.hashCode(Id);
     }
 }

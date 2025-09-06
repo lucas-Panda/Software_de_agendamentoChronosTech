@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Objects;
+
 public class UsuarioDTO {
 
     private Long Id;
@@ -80,11 +82,11 @@ public class UsuarioDTO {
         if (o == null || getClass() != o.getClass()) return false;
 
         UsuarioDTO that = (UsuarioDTO) o;
-        return Id.equals(that.Id);
+        return Objects.equals(Id, that.Id);
     }
 
     @Override
     public int hashCode() {
-        return Id.hashCode();
+        return Objects.hashCode(Id);
     }
 }

@@ -1,6 +1,6 @@
 package com.chronosTech.appAgendamentos.entitys;
 
-import com.chronosTech.appAgendamentos.dto.RecursoDTO;
+import com.chronosTech.appAgendamentos.dto.PerfilDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
@@ -8,30 +8,26 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Table(name = "CHT_RECURSO")
+@Table(name = "CHT_PERFIL")
 @Entity
-public class RecursoEntity implements Serializable {
-
+public class PerfilEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id ;
+    private Long Id;
 
     @NotBlank
     @Column(nullable = false)
-    private String nome;
+    private String descricao;
 
-    @NotBlank
-    @Column(nullable = false , unique = true)
-    private String chave;
+    public PerfilEntity(PerfilDTO perfil){
+        BeanUtils.copyProperties(perfil , this);
+    }
 
-    public RecursoEntity(){
+    public PerfilEntity(){
 
     }
 
-    public RecursoEntity(RecursoDTO recurso){
-        BeanUtils.copyProperties(recurso , this);
-    }
 
     public Long getId() {
         return Id;
@@ -41,27 +37,19 @@ public class RecursoEntity implements Serializable {
         this.Id = id;
     }
 
-    public @NotBlank String getNome() {
-        return nome;
+    public @NotBlank String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(@NotBlank String nome) {
-        this.nome = nome;
-    }
-
-    public @NotBlank String getChave() {
-        return chave;
-    }
-
-    public void setChave(@NotBlank String chave) {
-        this.chave = chave;
+    public void setDescricao(@NotBlank String descricao) {
+        this.descricao = descricao;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        RecursoEntity that = (RecursoEntity) o;
+        PerfilEntity that = (PerfilEntity) o;
         return Objects.equals(Id, that.Id);
     }
 
