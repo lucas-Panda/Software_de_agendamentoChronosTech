@@ -3,7 +3,7 @@ values ("jose" , "josecarlos@gmail.com" , "1234" , "80602377994", "24998859674")
 
 
 INSERT INTO cht_recurso (nome , chave)
-values ("registrar agendamento" , "R10");
+values ("Tela Cliente" , "1C");
 
 INSERT INTO cht_perfil (descricao)
 values ("cliente");
