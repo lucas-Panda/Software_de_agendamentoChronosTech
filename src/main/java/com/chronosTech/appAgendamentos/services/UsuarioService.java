@@ -5,6 +5,7 @@ import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
 import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
 import com.chronosTech.appAgendamentos.repositorys.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class UsuarioService {
     // CRUD
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Get All ou Listar do todos(READ)
     public List<UsuarioDTO> listarTodos() {
@@ -25,13 +29,14 @@ public class UsuarioService {
     // CREATE ou adicionar/insert
     public void inserir(UsuarioDTO usuario){
         UsuarioEntity usuarioEntity = new UsuarioEntity(usuario);
+        usuarioEntity.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioRepository.save(usuarioEntity);
     }
 
     //UPDATE ou alterar/atualizar
     public UsuarioDTO alterar(UsuarioDTO usuario){
         UsuarioEntity usuarioEntity = new UsuarioEntity(usuario);
-
+        usuarioEntity.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return new UsuarioDTO(usuarioRepository.save(usuarioEntity));
     }
 
