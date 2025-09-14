@@ -1,6 +1,7 @@
 package com.chronosTech.appAgendamentos.entitys;
 
 import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
+import com.chronosTech.appAgendamentos.entitys.enums.TipoSituacaoUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,10 @@ public class UsuarioEntity implements Serializable {
     @NotBlank
     @Column(nullable = false)
     private String senha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoSituacaoUsuario situacao;
 
     public UsuarioEntity(UsuarioDTO usuario){
         BeanUtils.copyProperties(usuario, this);
@@ -91,6 +96,14 @@ public class UsuarioEntity implements Serializable {
 
     public void setNumeroTelefone(@NotBlank String numeroTelefone) {
         this.numeroTelefone = numeroTelefone;
+    }
+
+    public TipoSituacaoUsuario getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(TipoSituacaoUsuario situacao) {
+        this.situacao = situacao;
     }
 
     @Override

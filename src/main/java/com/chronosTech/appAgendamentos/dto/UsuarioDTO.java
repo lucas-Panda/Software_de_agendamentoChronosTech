@@ -1,6 +1,7 @@
 package com.chronosTech.appAgendamentos.dto;
 
 import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
+import com.chronosTech.appAgendamentos.entitys.enums.TipoSituacaoUsuario;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,8 @@ public class UsuarioDTO {
     @Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números e ter 11 dígitos")
     @CPF(message = "CPF inválido")
     private String cpf;
+
+    private TipoSituacaoUsuario situacao;
 
     public UsuarioDTO(UsuarioEntity usuario){
         BeanUtils.copyProperties(usuario , this);
@@ -75,6 +78,14 @@ public class UsuarioDTO {
 
     public void setCpf(@Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números e ter 11 dígitos") @CPF(message = "CPF inválido") String cpf) {
         this.cpf = cpf;
+    }
+
+    public TipoSituacaoUsuario getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(TipoSituacaoUsuario situacao) {
+        this.situacao = situacao;
     }
 
     @Override
