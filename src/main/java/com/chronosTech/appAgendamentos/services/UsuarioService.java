@@ -79,14 +79,15 @@ public class UsuarioService {
         usuarioVerificadorRepository.save(verificador);
 
         //TO do -Enviar um e-mail para verficar a conta
-        emailService.enviarEmailTexto(usuario.getEmail(),"Novo usuário cadastrado",
-                "Você esta recebendo um email de cadastro o numero para validação é " + verificador.getUuid());
+        //emailService.enviarEmailTexto(usuario.getEmail(),"Novo usuário cadastrado",
+        //        "Você esta recebendo um email de cadastro o numero para validação é " + verificador.getUuid());
+        emailService.enviarEmailVerificacao(usuario.getEmail(), usuario.getNome(), verificador.getUuid().toString());
+
 
     }
 
     public String verificarCadastro(String uuid){
         UsuarioVerificadorEntity usuarioVerificacao =  usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid)).get();
-        System.out.println("CHEGOU ESTA PORRA DE VERIFICAÇÃO");
 
         if(usuarioVerificacao != null){
             if(usuarioVerificacao.getDataExpiracao().compareTo(Instant.now()) >= 0){
