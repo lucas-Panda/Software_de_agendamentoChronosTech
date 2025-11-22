@@ -8,9 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
+
+
 
 @Table(name = "CHT_USUARIO")
 @Entity
@@ -38,6 +42,20 @@ public class UsuarioEntity implements Serializable {
     @NotBlank
     @Column(nullable = false)
     private String senha;
+
+    @NotNull
+    @Column(nullable = false)
+    private boolean loja = false;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String bios;
+
+    @Lob
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] foto;
+
+    @Temporal(TemporalType.DATE)
+    private Date dataCadastro;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -104,6 +122,39 @@ public class UsuarioEntity implements Serializable {
 
     public void setSituacao(TipoSituacaoUsuario situacao) {
         this.situacao = situacao;
+    }
+
+    public boolean isLoja() {
+
+        return loja;
+    }
+
+    public void setLoja(boolean loja) {
+        this.loja = loja;
+    }
+
+    public String getBios() {
+        return bios;
+    }
+
+    public void setBios(String bios) {
+        this.bios = bios;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 
     @Override

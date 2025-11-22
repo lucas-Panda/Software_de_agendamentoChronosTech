@@ -39,16 +39,24 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http.cors(Customizer.withDefaults());
+
         http.csrf(csrf -> csrf.disable())
-            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandeler))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("usuario/**").permitAll().anyRequest().authenticated());
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandeler))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/usuario/**").permitAll()
+                        .requestMatchers("/sessao/**").permitAll()
+                        .anyRequest().authenticated()
+                );
 
         http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
 }

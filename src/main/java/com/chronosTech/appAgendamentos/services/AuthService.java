@@ -37,8 +37,8 @@ public class AuthService {
             AcessDTO accessDto = new AcessDTO(token);
 
             return accessDto;
-        }catch (BadCredentialsException e){
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return new AcessDTO("Acesso Negado");
 

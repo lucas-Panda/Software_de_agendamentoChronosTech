@@ -10,8 +10,11 @@ import com.chronosTech.appAgendamentos.repositorys.UsuarioVerificadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,6 +73,8 @@ public class UsuarioService {
         usuarioEntity.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioEntity.setSituacao(TipoSituacaoUsuario.PENDENTE);
         usuarioEntity.setId(null);
+        usuarioEntity.setDataCadastro(new Date());
+        System.out.println(usuarioEntity.getDataCadastro());
         usuarioRepository.save(usuarioEntity);
 
         UsuarioVerificadorEntity verificador =  new UsuarioVerificadorEntity();
@@ -103,6 +108,19 @@ public class UsuarioService {
         }else{
             return "Usuario não Verificado";
         }
+    }
+
+    public UsuarioEntity salvarAlteracoe(Long id, MultipartFile foto, String bio)throws IOException{
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("404 Usuário não encontrado"));
+        if (bio!= null){
+            usuarioEntity.setBios(bio);
+        }
+        if (foto != null && !foto.isEmpty()){
+            usuarioEntity.setFoto(foto.getBytes());
+        }
+
+        return usuarioRepository.save(usuarioEntity);
     }
 
 
