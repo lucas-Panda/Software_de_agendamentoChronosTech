@@ -17,17 +17,26 @@ import java.io.IOException;
 
 public class AuthFilterToken extends OncePerRequestFilter {
 
-    @Autowired
     private JwtUtils jwtUtil;
-
-    @Autowired
     private UserDetailServiceImpl userDetailService;
+
+    public AuthFilterToken(JwtUtils jwtUtil, UserDetailServiceImpl userDetailService){
+        this.jwtUtil = jwtUtil;
+        this.userDetailService = userDetailService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getServletPath();
+
+        if (path.startsWith("/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         try {
+
             String jwt = getToken(request);
-            if(jwt != null && jwtUtil.validateJwtToker(jwt)){
+            if(jwt != null && jwtUtil.validateJwtToken(jwt)){
 
                 String username = jwtUtil.getUsernameToken(jwt);
 
@@ -41,10 +50,7 @@ public class AuthFilterToken extends OncePerRequestFilter {
             }
         }catch (Exception e){
             System.out.println("Ocorreu um erro ao processar o token");
-        }finally {
-
         }
-
         filterChain.doFilter(request,response);
     }
     private String getToken(HttpServletRequest request){

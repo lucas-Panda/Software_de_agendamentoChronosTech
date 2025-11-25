@@ -1,6 +1,7 @@
 package com.chronosTech.appAgendamentos.controllers;
 
 import com.chronosTech.appAgendamentos.dto.AuthenticationDTO;
+import com.chronosTech.appAgendamentos.dto.LoginResponseDTO;
 import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
 import com.chronosTech.appAgendamentos.services.AuthService;
 import com.chronosTech.appAgendamentos.services.UsuarioService;
@@ -20,8 +21,9 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationDTO authDto ){
-        return ResponseEntity.ok(authService.login(authDto));
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationDTO authDto ){
+        LoginResponseDTO responseDTO =authService.login(authDto);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping(value = "/cadastro")

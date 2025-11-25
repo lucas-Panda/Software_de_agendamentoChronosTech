@@ -2,15 +2,18 @@ package com.chronosTech.appAgendamentos.entitys;
 
 import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
 import com.chronosTech.appAgendamentos.entitys.enums.TipoSituacaoUsuario;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+
+
 
 @Table(name = "CHT_USUARIO")
 @Entity
@@ -39,9 +42,29 @@ public class UsuarioEntity implements Serializable {
     @Column(nullable = false)
     private String senha;
 
+    @NotNull
+    @Column(nullable = false)
+    private boolean loja = false;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String bios;
+
+    @Lob
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] foto;
+
+    @Temporal(TemporalType.DATE)
+    private Date dataCadastro;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoSituacaoUsuario situacao;
+
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
+    private List<SessaoEntity> horarios;
+
 
     public UsuarioEntity(UsuarioDTO usuario){
         BeanUtils.copyProperties(usuario, this);
@@ -104,6 +127,47 @@ public class UsuarioEntity implements Serializable {
 
     public void setSituacao(TipoSituacaoUsuario situacao) {
         this.situacao = situacao;
+    }
+
+    public boolean isLoja() {
+
+        return loja;
+    }
+
+    public void setLoja(boolean loja) {
+        this.loja = loja;
+    }
+
+    public String getBios() {
+        return bios;
+    }
+
+    public void setBios(String bios) {
+        this.bios = bios;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    public List<SessaoEntity> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(List<SessaoEntity> horarios) {
+        this.horarios = horarios;
     }
 
     @Override

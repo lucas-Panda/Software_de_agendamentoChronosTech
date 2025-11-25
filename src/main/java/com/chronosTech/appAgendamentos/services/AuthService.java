@@ -2,6 +2,8 @@ package com.chronosTech.appAgendamentos.services;
 
 import com.chronosTech.appAgendamentos.dto.AcessDTO;
 import com.chronosTech.appAgendamentos.dto.AuthenticationDTO;
+import com.chronosTech.appAgendamentos.dto.LoginResponseDTO;
+import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
 import com.chronosTech.appAgendamentos.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,28 +21,25 @@ public class AuthService {
     @Autowired
     private JwtUtils jwtUtils;
 
-    public AcessDTO login(AuthenticationDTO authDto){
+    @Autowired
+    private UsuarioService usuarioService;
 
+    public LoginResponseDTO login(AuthenticationDTO authDto){
         try {
-            //Cria mecanismo de credencial para o spring
-            UsernamePasswordAuthenticationToken userAuth =
-                    new UsernamePasswordAuthenticationToken(authDto.getUsername(), authDto.getPassword());
+            UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(authDto.getUsername(),authDto.getPassword());
 
-            //Prepara mecanismo para autenticacao
             Authentication authentication = authenticationManager.authenticate(userAuth);
 
-            //Busca usuario logado
             UserDetailsImpl userAuthenticate = (UserDetailsImpl) authentication.getPrincipal();
 
             String token = jwtUtils.generateTokenFromUserDetailsImpl(userAuthenticate);
 
-            AcessDTO accessDto = new AcessDTO(token);
+            UsuarioEntity usuarioEntity =usuarioService.buscarPorEmail(userAuthenticate.getUsername());
 
-            return accessDto;
-        }catch (BadCredentialsException e){
-
+            return new LoginResponseDTO(token, usuarioEntity);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new LoginResponseDTO("Acesso negado", null);
         }
-        return new AcessDTO("Acesso Negado");
-
     }
 }

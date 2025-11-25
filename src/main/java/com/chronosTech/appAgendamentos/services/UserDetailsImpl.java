@@ -2,10 +2,12 @@ package com.chronosTech.appAgendamentos.services;
 
 import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -24,12 +26,15 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(UsuarioEntity usuario){
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USUARIO");
+        Collection<? extends GrantedAuthority> authorities = Collections.singletonList(authority);
+
         return new UserDetailsImpl(
                 usuario.getId(),
                 usuario.getEmail(),
                 usuario.getSenha(),
                 usuario.getNome(),
-                new ArrayList<>());
+                authorities);
     }
 
     @Override
@@ -67,4 +72,7 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    public Long getId() {
+        return id;
+    }
 }

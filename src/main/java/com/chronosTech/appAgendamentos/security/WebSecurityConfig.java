@@ -2,6 +2,8 @@ package com.chronosTech.appAgendamentos.security;
 
 import com.chronosTech.appAgendamentos.security.jwt.AuthEntryPointJwt;
 import com.chronosTech.appAgendamentos.security.jwt.AuthFilterToken;
+import com.chronosTech.appAgendamentos.security.jwt.JwtUtils;
+import com.chronosTech.appAgendamentos.services.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserDetailServiceImpl userDetailService;
+
+    @Autowired
     private AuthEntryPointJwt unauthorizedHandeler;
 
     @Bean
@@ -35,20 +43,27 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthFilterToken authFilterToken(){
-        return new AuthFilterToken();
+        return new AuthFilterToken(jwtUtils, userDetailService);
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
-        http.cors(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.disable())
-            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandeler))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("usuario/**").permitAll().anyRequest().authenticated());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http.cors().and().csrf().disable()
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandeler))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/usuario/**").permitAll()
+                        .requestMatchers("/servicos/usuario/**").permitAll()
+                        .anyRequest().authenticated()
+                );
+
 
         http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
 }

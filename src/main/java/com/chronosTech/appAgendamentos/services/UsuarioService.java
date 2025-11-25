@@ -1,17 +1,22 @@
 package com.chronosTech.appAgendamentos.services;
 
 
+import com.chronosTech.appAgendamentos.dto.AgendamentoDTO;
 import com.chronosTech.appAgendamentos.dto.UsuarioDTO;
+import com.chronosTech.appAgendamentos.entitys.AgendamentoEntity;
 import com.chronosTech.appAgendamentos.entitys.UsuarioEntity;
 import com.chronosTech.appAgendamentos.entitys.UsuarioVerificadorEntity;
 import com.chronosTech.appAgendamentos.entitys.enums.TipoSituacaoUsuario;
+import com.chronosTech.appAgendamentos.repositorys.AgendamentoRepository;
 import com.chronosTech.appAgendamentos.repositorys.UsuarioRepository;
 import com.chronosTech.appAgendamentos.repositorys.UsuarioVerificadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +34,11 @@ public class UsuarioService {
 
     @Autowired
     private EmailService emailService;
+
+    public UsuarioEntity buscarPorEmail(String email){
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Erro 404 email não encontrado"));
+    }
 
     // Get All ou Listar do todos(READ)
     public List<UsuarioDTO> listarTodos() {
@@ -57,6 +67,11 @@ public class UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
+    public UsuarioEntity buscarEntidadePorId(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
     //Get one
     public  UsuarioDTO buscarPorId(Long Id){
         UsuarioEntity usuarioEntity = usuarioRepository.findById(Id).get();
@@ -70,6 +85,8 @@ public class UsuarioService {
         usuarioEntity.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioEntity.setSituacao(TipoSituacaoUsuario.PENDENTE);
         usuarioEntity.setId(null);
+        usuarioEntity.setDataCadastro(new Date());
+        System.out.println(usuarioEntity.getDataCadastro());
         usuarioRepository.save(usuarioEntity);
 
         UsuarioVerificadorEntity verificador =  new UsuarioVerificadorEntity();
@@ -105,6 +122,19 @@ public class UsuarioService {
         }
     }
 
+    public UsuarioEntity salvarAlteracoe(Long id, MultipartFile foto, String bio)throws IOException{
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("404 Usuário não encontrado"));
+        if (bio!= null){
+            usuarioEntity.setBios(bio);
+        }
+        if (foto != null && !foto.isEmpty()){
+            usuarioEntity.setFoto(foto.getBytes());
+        }
+
+        return usuarioRepository.save(usuarioEntity);
+    }
+
 
     //UPDATE ou alterar/atualizar
     //public UsuarioDTO alterar(UsuarioDTO usuario){
@@ -126,5 +156,18 @@ public class UsuarioService {
 
     //}
 
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
 
+    public AgendamentoDTO agendarServico(AgendamentoDTO dto){
+        AgendamentoEntity entity = new AgendamentoEntity();
+        entity.setIdUsuario(dto.getIdUsuario());
+        entity.setIdPrestador(dto.getIdPrestador());
+        entity.setHorarioId(dto.getHorarioId());
+
+        entity = agendamentoRepository.save(entity); // agora funciona
+
+        dto.setId(entity.getId()); // retorna o id gerado
+        return dto;
+    }
 }
